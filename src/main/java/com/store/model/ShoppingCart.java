@@ -1,5 +1,6 @@
 package com.store.model;
 
+import java.util.Date;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -16,6 +17,10 @@ public class ShoppingCart {
 	private Integer id;
 
 	private String status;
+
+	private Date openDate;
+
+	private Date closeDate;
 
 	@OneToMany(mappedBy = "cart", cascade = CascadeType.REMOVE)
 	private Set<ShoppingCartItems> cartItems;
@@ -42,6 +47,22 @@ public class ShoppingCart {
 
 	public void setCartItems(Set<ShoppingCartItems> cartItems) {
 		this.cartItems = cartItems;
+	}
+
+	public Date getOpenDate() {
+		return openDate;
+	}
+
+	public void setOpenDate(Date openDate) {
+		this.openDate = openDate;
+	}
+
+	public Date getCloseDate() {
+		return closeDate;
+	}
+
+	public void setCloseDate(Date closeDate) {
+		this.closeDate = closeDate;
 	}
 
 }
