@@ -10,6 +10,7 @@ import javax.persistence.Id;
 public class Inventory {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
+	//@OneToMany(mappedBy = "item")
 	private Integer id;
 
 	@Column(unique = true)
