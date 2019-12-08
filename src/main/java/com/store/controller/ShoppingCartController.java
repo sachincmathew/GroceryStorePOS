@@ -1,5 +1,8 @@
 package com.store.controller;
 
+import java.util.Iterator;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -62,5 +65,25 @@ public class ShoppingCartController {
 			return "An error occurred. Please contact the Administrator.";
 		}
 		return "item added";
+	}
+
+	@RequestMapping(path = "/removeItemFromCart", method = RequestMethod.POST)
+	public @ResponseBody String RemoveItemFromCart(@RequestBody CartItem ci) {
+		try {
+			List<ShoppingCartItems> items = shoppingCartItemRepository.findByCartIdAndItemId(ci.getCartId(),
+					ci.getItemId());
+			for (Iterator<ShoppingCartItems> iterator = items.iterator(); iterator.hasNext();) {
+				ShoppingCartItems sci= (ShoppingCartItems) iterator.next();
+				if(sci.getQuantity() - ci.getQuantity() <= 0) {
+					shoppingCartItemRepository.deleteById(sci.getId());	
+				}else {
+					sci.setQuantity(sci.getQuantity() - ci.getQuantity());
+					shoppingCartItemRepository.save(sci);
+				}				
+			}
+		} catch (Exception e) {
+			return "An error occurred. Please contact the Administrator.";
+		}
+		return "item removed";
 	}
 }
