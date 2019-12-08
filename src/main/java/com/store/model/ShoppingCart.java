@@ -16,9 +16,9 @@ public class ShoppingCart {
 	private Integer id;
 
 	private String status;
-	
+
 	@OneToMany(mappedBy = "cart", cascade = CascadeType.REMOVE)
-    private Set<ShoppingCartItems> cartItems;
+	private Set<ShoppingCartItems> cartItems;
 
 	public Integer getId() {
 		return id;
@@ -34,6 +34,14 @@ public class ShoppingCart {
 
 	public void setStatus(String status) {
 		this.status = status;
+	}
+
+	public Set<ShoppingCartItems> getCartItems() {
+		return cartItems;
+	}
+
+	public void setCartItems(Set<ShoppingCartItems> cartItems) {
+		this.cartItems = cartItems;
 	}
 
 }
