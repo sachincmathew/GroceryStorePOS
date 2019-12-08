@@ -1,21 +1,9 @@
-package com.store.model;
+package com.store.model.custom;
 
 import java.util.Date;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-@Entity
-public class ShoppingCart {
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+public class ShoppingCartDetails {
 	private Integer id;
 
 	private String status;
@@ -24,9 +12,7 @@ public class ShoppingCart {
 
 	private Date closeDate;
 
-	@OneToMany(mappedBy = "cart", cascade = CascadeType.REMOVE)
-	@JsonIgnore
-	private Set<ShoppingCartItems> cartItems;
+	private Set<Item> cartItems;
 
 	public Integer getId() {
 		return id;
@@ -44,11 +30,11 @@ public class ShoppingCart {
 		this.status = status;
 	}
 
-	public Set<ShoppingCartItems> getCartItems() {
+	public Set<Item> getCartItems() {
 		return cartItems;
 	}
 
-	public void setCartItems(Set<ShoppingCartItems> cartItems) {
+	public void setCartItems(Set<Item> cartItems) {
 		this.cartItems = cartItems;
 	}
 

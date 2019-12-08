@@ -1,7 +1,11 @@
-package com.store.model;
+package com.store.model.custom;
 
 public class CartItem {
 	public int cartId;
+
+	public int itemId;
+
+	public int quantity;
 
 	public CartItem() {
 	}
@@ -12,10 +16,6 @@ public class CartItem {
 		this.itemId = itemId;
 		this.quantity = quantity;
 	}
-
-	public int itemId;
-
-	public int quantity;
 
 	public int getCartId() {
 		return cartId;
