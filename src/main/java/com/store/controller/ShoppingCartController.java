@@ -2,8 +2,10 @@ package com.store.controller;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -36,6 +38,19 @@ public class ShoppingCartController {
 	@RequestMapping(path = "/findAll", method = RequestMethod.GET)
 	public @ResponseBody Iterable<ShoppingCart> getAllItems() {
 		return shoppingCartRepository.findAll();
+	}
+	
+	@RequestMapping(path = "/find/{id}", method = RequestMethod.GET)
+	public @ResponseBody ShoppingCart findCart(@PathVariable Integer id) {
+		Optional<ShoppingCart> i;
+		try {
+			i = shoppingCartRepository.findById(id);
+		} catch (Exception e) {
+			return null;//TODO: Exception Handling
+		}
+		if(i.isPresent())
+			return i.get();
+		return null;
 	}
 
 	@RequestMapping(path = "/create", method = RequestMethod.POST)
