@@ -2,8 +2,8 @@
 The application will expose a set of restful APIs that interface with any frontend GUI for a full fleged POS application for a grocery store.
 
 ## Docker Related
-Was able to create containers for the MySQL and the application. However the network configuration pending.
-Currently unable to deploy using Docker.
+Was able to create containers for the MySQL and the application. However the network configuration is pending (application-container is unable to communicate with the MySQL-container).
+So, currently unable to deploy using Docker.
 
 ## Steps to run
 1. Clone the repository.
