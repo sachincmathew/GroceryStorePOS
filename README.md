@@ -1,11 +1,11 @@
 # GroceryStorePOS
 The application will expose a set of restful APIs that interface with any frontend GUI for a full fleged POS application for a grocery store.
 
-##Docker Related
+#Docker Related
 Was able to create containers for the MySQL and the application. However the network configuration pending.
 Currently unable to deploy using Docker.
 
-##Steps to run
+#Steps to run
 
 1. Clone the repository.
 2. Execute the script at GroceryStorePOS\Database\script.sql in MySQL
