@@ -1,5 +1,14 @@
 FROM openjdk:8-jdk-alpine
 VOLUME /tmp
-ARG JAR_FILE=target/*.jar
-COPY ${JAR_FILE} app.jar
-ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/app.jar"]
+
+RUN apk update \
+	&& apk upgrade \
+	&& apk add git
+
+RUN git clone https://github.com/sachincmathew/GroceryStorePOS.git \
+	&& cd GroceryStorePOS \
+	&& ./gradlew build \
+	&& cp build/libs/grocery-store-pos-1.0.0.jar .. \
+	&& rm -rf /GroceryStorePOS
+
+CMD ["java","-jar","grocery-store-pos-1.0.0.jar"]

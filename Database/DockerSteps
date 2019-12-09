@@ -1,0 +1,48 @@
+create and run an image of the MySQL database
+ sudo docker run -d -p 6033:3306 --name=docker-mysql --network employee-mysql --env="MYSQL_ROOT_PASSWORD=root" --env="MYSQL_PASSWORD=root" --env="MYSQL_DATABASE=shopping_cart" mysql
+
+Verify DB Creation
+ sudo docker exec -it docker-mysql bash;
+ 
+ mysql -uroot -p
+ 
+ mysql> show databases;
+	+--------------------+
+	| Database           |
+	+--------------------+
+	| information_schema |
+	| mysql              |
+	| performance_schema |
+	| shopping_cart      |
+	| sys                |
+	+--------------------+
+	5 rows in set (0.01 sec)
+
+Run the following command to import this script to docker-mysql
+ sudo docker exec -i docker-mysql mysql -uroot -proot shopping_cart < Database/script.sql
+
+Verify Table Creation
+ sudo docker exec -it docker-mysql bash;
+ 
+ mysql -uroot -p
+ 
+ mysql> use shopping_cart;
+
+ mysql> show tables;
+	+-------------------------+
+	| Tables_in_shopping_cart |
+	+-------------------------+
+	| checkout_items_history  |
+	| inventory               |
+	| shopping_cart           |
+	| shopping_cart_items     |
+	+-------------------------+
+	4 rows in set (0.00 sec)
+
+-- -- -- --- --- --------------------------------
+
+sudo docker image build -f NewDockerFile -t grocerystore .
+
+
+
+sudo docker container run --network sachincmathew --name grocerystoreapi  -p 8080:8080 -d grocerystore
