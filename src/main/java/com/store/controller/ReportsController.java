@@ -15,8 +15,12 @@ import com.store.model.ShoppingCart;
 import com.store.repo.CheckoutItemsHistoryRepository;
 import com.store.repo.ShoppingCartRepository;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+
+@Api(tags = {"Report API(s)"})
 @RestController
-@RequestMapping("/reports")
+@RequestMapping("/api/reports")
 public class ReportsController {
 	private static final String CLOSED = "CLOSED";
 
@@ -25,14 +29,14 @@ public class ReportsController {
 
 	@Autowired
 	private CheckoutItemsHistoryRepository checkoutItemsRepository;
-
+	
+	@ApiOperation(value = "Tally's all sold items in **closed** shopping carts, and computes the total profit or loss for last specified number of days")
 	@RequestMapping(path = "/calculateProfit/{days}", method = RequestMethod.GET)
 	public Float calculateProfit(@PathVariable int days) {
 		LocalDate localDate = LocalDate.now().minusDays(days);
 		Date fromDate = java.sql.Date.valueOf(localDate);
 
 		List<ShoppingCart> lsc = shoppingCartRepository.findByStatusAndCloseDateAfter(CLOSED, fromDate);
-		System.out.println(lsc.size());
 
 		List<Integer> cartIds = new ArrayList<Integer>();
 		for (ShoppingCart sc : lsc) {
@@ -40,7 +44,6 @@ public class ReportsController {
 		}
 
 		List<CheckoutItemsHistory> cih = checkoutItemsRepository.findByCartIdIn(cartIds);
-		System.out.println(cih.size());
 		
 		float profit = 0.0F;
 		for(CheckoutItemsHistory c: cih) {

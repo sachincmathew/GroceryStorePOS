@@ -13,13 +13,18 @@ import org.springframework.web.bind.annotation.RestController;
 import com.store.model.Inventory;
 import com.store.repo.InventoryRepository;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+
+@Api(tags = {"Inventory API(s)"})
 @RestController
-@RequestMapping(path = "/inventory")
+@RequestMapping(path = "/api/inventory")
 public class InventoryController {
 
 	@Autowired
 	private InventoryRepository inventoryRepository;
 
+	@ApiOperation(value = "Add new item to the inventory")
 	@RequestMapping(path = "/add", method = RequestMethod.POST)
 	public @ResponseBody String addNewItem(@RequestBody Inventory i) {
 		if (i.getName() == null || i.getName().isEmpty() || i.getPurchasePrice() == null
@@ -39,6 +44,7 @@ public class InventoryController {
 		return newI.getId().toString();
 	}
 
+	@ApiOperation(value = "Update the **purchase price** and **retail price** of a item.")
 	@RequestMapping(path = "/update", method = RequestMethod.PUT)
 	public @ResponseBody String updateItem(@RequestBody Inventory i) {
 		if (i.getId() == null || i.getName() == null || i.getName().isEmpty() || i.getPurchasePrice() == null
@@ -62,6 +68,7 @@ public class InventoryController {
 		return "updated";
 	}
 
+	@ApiOperation(value = "Remove an item from the inventory. Any OPEN shopping cart that contains the deleted item will be updated automatically.")
 	@RequestMapping(path = "/remove/{id}", method = RequestMethod.DELETE)
 	public @ResponseBody String removeItem(@PathVariable Integer id) {
 		try {
@@ -74,6 +81,7 @@ public class InventoryController {
 		return "removed";
 	}
 
+	@ApiOperation(value = "Retrieve the details of a item in the inventory")
 	@RequestMapping(path = "/find/{id}", method = RequestMethod.GET)
 	public @ResponseBody Inventory findItem(@PathVariable Integer id) {
 		Optional<Inventory> i;
@@ -87,6 +95,7 @@ public class InventoryController {
 		return null;
 	}
 
+	@ApiOperation(value = "List all items in the inventory")
 	@RequestMapping(path = "/findAll", method = RequestMethod.GET)
 	public @ResponseBody Iterable<Inventory> getAllItems() {
 		return inventoryRepository.findAll();

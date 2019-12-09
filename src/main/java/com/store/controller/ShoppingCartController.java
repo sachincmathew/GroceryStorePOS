@@ -28,8 +28,12 @@ import com.store.repo.InventoryRepository;
 import com.store.repo.ShoppingCartItemRepository;
 import com.store.repo.ShoppingCartRepository;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+
+@Api(tags = {"Shopping Cart API(s)"})
 @RestController
-@RequestMapping("/cart")
+@RequestMapping("/api/cart")
 public class ShoppingCartController {
 	private static final String OPEN = "OPEN";
 	private static final String CLOSED = "CLOSED";
@@ -58,6 +62,7 @@ public class ShoppingCartController {
 		}
 	}
 	
+	@ApiOperation(value = "Lists all shopping carts")
 	@RequestMapping(path = "/findAll", method = RequestMethod.GET)
 	public @ResponseBody Iterable<ShoppingCartDetails> getAllItems() {//TODO: Checked out cart's details needs to be formed
 		updateInventoryMap();
@@ -86,6 +91,7 @@ public class ShoppingCartController {
 		return lstScd;
 	}
 
+	@ApiOperation(value = "Retrieve the details of a shopping cart")
 	@RequestMapping(path = "/find/{id}", method = RequestMethod.GET)
 	public @ResponseBody ShoppingCart findCart(@PathVariable Integer id) {
 		Optional<ShoppingCart> i;
@@ -96,9 +102,10 @@ public class ShoppingCartController {
 		}
 		if (i.isPresent())
 			return i.get();
-		return null;
+		return null;//TODO: Total also needs to be calculated and displayed
 	}
 
+	@ApiOperation(value = "Add new item to the inventory")
 	@RequestMapping(path = "/create", method = RequestMethod.POST)
 	public @ResponseBody String createCart() {
 		ShoppingCart sc = new ShoppingCart();
@@ -112,6 +119,7 @@ public class ShoppingCartController {
 		return sc.getId().toString();
 	}
 
+	@ApiOperation(value = "Add an item and the added quantity to a shopping cart.")
 	@RequestMapping(path = "/addItemToCart", method = RequestMethod.POST)
 	public @ResponseBody String AddItemToCart(@RequestBody CartItem ci) {
 		try {
@@ -135,7 +143,8 @@ public class ShoppingCartController {
 		return "item added";
 	}
 
-	@RequestMapping(path = "/removeItemFromCart", method = RequestMethod.POST)
+	@ApiOperation(value = "Remove specified number of items from the shopping cart.")
+	@RequestMapping(path = "/removeItemFromCart", method = RequestMethod.DELETE)
 	public @ResponseBody String RemoveItemFromCart(@RequestBody CartItem ci) {
 		try {
 			List<ShoppingCartItems> items = shoppingCartItemRepository.findByCartIdAndItemId(ci.getCartId(),
@@ -155,6 +164,7 @@ public class ShoppingCartController {
 		return "item removed";
 	}
 
+	@ApiOperation(value = "Checkout an open shopping cart and set it's status to CLOSED. It returns the total price that a consumer is expected to pay.")
 	@RequestMapping(path = "/checkout/{id}", method = RequestMethod.GET)
 	public @ResponseBody Float checkout(@PathVariable Integer id) {
 		float total = 0.0F;
