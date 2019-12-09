@@ -11,5 +11,5 @@ $ docker build --build-arg JAR_FILE=build/libs/*.jar -t grocery_store_pos .
 sudo docker run -p 8080:8080 -t grocery_store_pos
 
 # Accessing the API
-http://localhost:8080/
+ Swagger API documentation has been implemented. After starting the application, go to http://localhost:8080/swagger-ui.html#/
 
