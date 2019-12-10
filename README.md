@@ -1,14 +1,17 @@
 # GroceryStorePOS
 The application will expose a set of restful APIs that interface with any frontend GUI for a full fleged POS application for a grocery store.
 
-## Docker Related
-Was able to create containers for the MySQL and the application. However the network configuration is pending (application-container is unable to communicate with the MySQL-container).
-So, currently unable to deploy using Docker.
-
 ## Steps to run
-1. Clone the repository.
-2. Execute the script at GroceryStorePOS\Database\script.sql in MySQL
-3. Run this command to execute the application: gradlew build && java -jar build/libs/grocery-store-pos-1.0.0.jar
+1. Create new network (subnet machine dependent)
+	sudo docker network create --driver bridge --subnet 172.18.0.0/16 net1
+2. Run MySQL (mydb)
+	sudo docker run -d -p 3306:3306 --name=mydb --net net1 --env="MYSQL_ROOT_PASSWORD=root" --env="MYSQL_PASSWORD=root" --env="MYSQL_DATABASE=grocery_store_pos" mysql
+3. Execute table creation scripts
+	sudo docker exec -i mydb mysql -uroot -proot grocery_store_pos < Database/script.sql
+4. Create StoreAPI image
+	sudo docker image build -t storeapi .
+5. Run storeapi
+	sudo docker container run --net net1 --name storeapi -p 8080:8080 -d storeapi
 
 ## Accessing the API
 Swagger API documentation has been implemented. After starting the application, go to http://localhost:8080/swagger-ui.html#/
