@@ -1,8 +1,8 @@
 create and run an image of the MySQL database
- sudo docker run -d -p 6033:3306 --name=docker-mysql --network employee-mysql --env="MYSQL_ROOT_PASSWORD=root" --env="MYSQL_PASSWORD=root" --env="MYSQL_DATABASE=shopping_cart" mysql
+ sudo docker run -d -p 3306:3306 --name=mydb --net net1 --env="MYSQL_ROOT_PASSWORD=root" --env="MYSQL_PASSWORD=root" --env="MYSQL_DATABASE=grocery_store_pos" mysql
 
 Verify DB Creation
- sudo docker exec -it docker-mysql bash;
+ sudo docker exec -it mydb bash;
  
  mysql -uroot -p
  
@@ -19,10 +19,10 @@ Verify DB Creation
 	5 rows in set (0.01 sec)
 
 Run the following command to import this script to docker-mysql
- sudo docker exec -i docker-mysql mysql -uroot -proot shopping_cart < Database/script.sql
+ sudo docker exec -i mydb mysql -uroot -proot grocery_store_pos < Database/script.sql
 
 Verify Table Creation
- sudo docker exec -it docker-mysql bash;
+ sudo docker exec -it mydb bash;
  
  mysql -uroot -p
  
@@ -41,8 +41,8 @@ Verify Table Creation
 
 -- -- -- --- --- --------------------------------
 
-sudo docker image build -f NewDockerFile -t grocerystore .
+sudo docker image build -t grocerystore .
 
 
 
-sudo docker container run --network sachincmathew --name grocerystoreapi  -p 8080:8080 -d grocerystore
+sudo docker container run --net net1 --name storeapi -p 8080:8080 -d grocerystore
